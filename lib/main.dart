@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'read_view.dart';
 import 'word_screen.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class IlkokulUygulama extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WordScreen()
+      home: ReadView()
     );
   }
 }

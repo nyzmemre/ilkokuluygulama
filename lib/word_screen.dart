@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_balloon_slider/flutter_balloon_slider.dart';
 
 class WordScreen extends StatefulWidget {
   @override
@@ -36,7 +33,9 @@ class _WordScreenState extends State<WordScreen> {
     "yazdı.",
   ];
   int _currentIndex = 0;
-  double _value = 0.5;
+  double _value = 0;
+  double _duration=3;
+  bool _isStart=false;
 
 
   @override
@@ -45,8 +44,9 @@ class _WordScreenState extends State<WordScreen> {
   }
 
   void _startAnimation() async {
+    print(_duration.toStringAsFixed(3).replaceAll('.', ''));
     while (_currentIndex < words.length) {
-      await Future.delayed(Duration(milliseconds: int.parse(_value.toString()[0])));
+      await Future.delayed(Duration(milliseconds: int.parse(_duration.toStringAsFixed(3).replaceAll('.', ''))));
       setState(() {
         _currentIndex++;
       });
@@ -72,23 +72,29 @@ class _WordScreenState extends State<WordScreen> {
                   : Text("Bitti"),
             ),
           ),
-          Text(_value.toString(), style: TextStyle(fontSize: 50),),
-          ElevatedButton(onPressed: (){
+          ElevatedButton(onPressed:(!_isStart) ? (){
             _startAnimation();
-          }, child: Text('Başla')),
+            _isStart=!_isStart;
+          } : (){
+
+            setState(() {
+              _currentIndex=1;
+              _startAnimation();
+            });
+          }
+          , child: (!_isStart) ? Text('Başla') : Text('Tekrar Başlat')),
           Expanded(flex:1, child:  Slider(
             value: _value,
             onChanged: (newValue) {
               setState(() {
-                _value = newValue; // Değeri doğrudan atama
+                _value = newValue;
+                _duration = 3-newValue;
               });
+
             },
-            min: 0.2, // Doğru min değer
-            max: 7.0, // Doğru max değer
-            // Slider'ı tersine çevirmek için ters görünüm oluştur
-            semanticFormatterCallback: (double value) {
-              return '${10.0 - value}'; // Değeri tersine çevirerek slider'ı ters göster
-            },
+            min: 0.0,
+            max: 3.0
+
           ),
           ),
         ],
