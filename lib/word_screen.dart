@@ -57,7 +57,7 @@ class _WordScreenState extends State<WordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Words Animation'),
+        title: Text('Hızlı Okuma'),
       ),
       body: Column(
         children: [
