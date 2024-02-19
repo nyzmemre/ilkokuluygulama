@@ -16,7 +16,7 @@ class IlkokulUygulama extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SubstractionView()
+      home: ReadView()
     );
   }
 }

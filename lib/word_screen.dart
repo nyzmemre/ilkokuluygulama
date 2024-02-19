@@ -1,37 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ilkokuluygulama/product/utility/constants/text_constants.dart';
+import 'package:ilkokuluygulama/product/utility/widgets/button_text_row.dart';
 
 class WordScreen extends StatefulWidget {
+  final List<String> list;
+
+  const WordScreen({super.key, required this.list});
   @override
   _WordScreenState createState() => _WordScreenState();
 }
 
 class _WordScreenState extends State<WordScreen> {
-  final List<String> words = [
-    "Başla Butonuna Tıkla",
-    "Benim",
-    "Enes",
-    "adında",
-    "kardeşim",
-    "var.",
-    "Benim",
-    "Esra",
-    "adında",
-    "annem",
-    "var.",
-    "Benim",
-    "adım",
-    "Eymen.",
-    "Ben",
-    "hızlı",
-    "okumak",
-    "için",
-    "bunu",
-    "okudum.",
-    "Bunu",
-    "bana",
-    "babam",
-    "yazdı.",
-  ];
+
   int _currentIndex = 0;
   double _value = 0;
   double _duration=3;
@@ -45,7 +25,7 @@ class _WordScreenState extends State<WordScreen> {
 
   void _startAnimation() async {
     print(_duration.toStringAsFixed(3).replaceAll('.', ''));
-    while (_currentIndex < words.length) {
+    while (_currentIndex < widget.list.length) {
       await Future.delayed(Duration(milliseconds: int.parse(_duration.toStringAsFixed(3).replaceAll('.', ''))));
       setState(() {
         _currentIndex++;
@@ -57,19 +37,19 @@ class _WordScreenState extends State<WordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hızlı Okuma'),
+        title: const Text(TextConstants.fastReady),
       ),
       body: Column(
         children: [
           Expanded(
             flex: 3,
             child: Center(
-              child: _currentIndex < words.length
+              child: _currentIndex < widget.list.length
                   ? Text(
-                words[_currentIndex],
-                style: TextStyle(fontSize: 24),
+                widget.list[_currentIndex],
+                style: const TextStyle(fontSize: 24),
               )
-                  : Text("Bitti"),
+                  : const Text(TextConstants.done),
             ),
           ),
           ElevatedButton(onPressed:(!_isStart) ? (){
@@ -82,7 +62,9 @@ class _WordScreenState extends State<WordScreen> {
               _startAnimation();
             });
           }
-          , child: (!_isStart) ? Text('Başla') : Text('Tekrar Başlat')),
+          , child: (!_isStart) ? const ButtonTextRow(text: TextConstants.start, icons: Icons.play_arrow)
+                  : const ButtonTextRow(text: TextConstants.startAgain, icons: Icons.replay)
+          ),
           Expanded(flex:1, child:  Slider(
             value: _value,
             onChanged: (newValue) {
