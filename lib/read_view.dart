@@ -8,6 +8,7 @@ class ReadView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Okuma Hızlandırma'),),
       body: ListView.builder(
           itemCount: ReadLists.allList.length,
           itemBuilder: (context, int index){

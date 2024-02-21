@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ilkokuluygulama/animation.dart';
 
 class SubstractionView extends StatefulWidget {
   @override
@@ -14,6 +16,7 @@ class _SubstractionViewState extends State<SubstractionView> {
   TextEditingController _answerController = TextEditingController();
   bool _showResult = false;
   String _resultText = '';
+
 
   @override
   void initState() {
@@ -33,10 +36,11 @@ class _SubstractionViewState extends State<SubstractionView> {
       if (userAnswer == _correctAnswer) {
         _resultText = 'Doğru!';
       } else {
-        _resultText = 'Yanlış! Doğru cevap $_correctAnswer olmalıydı.';
+        _resultText = 'Yanlış! $_firstNumber yumurtadan $_secondNumber yumurta kırılırsa $_correctAnswer yumurta kalır. Alttaki düğmeye bas!';
       }
       _showResult = true;
     });
+    
   }
 
   void _newQuestion() {
@@ -53,49 +57,67 @@ class _SubstractionViewState extends State<SubstractionView> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Çıkarma İşlemi'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              '$_firstNumber - $_secondNumber = ?',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _answerController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Cevabı Girin'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _checkAnswer();
-              },
-              child: Text('Cevabı Kontrol Et'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _newQuestion();
-              },
-              child: Text('Yeni Soru'),
-            ),
-            SizedBox(height: 20),
-            if (_showResult)
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Text(
-                _resultText,
+                '$_firstNumber - $_secondNumber = ?',
                 style: TextStyle(fontSize: 24),
               ),
-          ],
+              SizedBox(height: 20),
+              TextField(
+                controller: _answerController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Cevabı Girin'),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _checkAnswer();
+                    },
+                    child: Text('Cevabı Kontrol Et'),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      _newQuestion();
+                    },
+                    child: Text('Yeni Soru'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              if (_showResult)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _resultText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    MyImageSwitcher(total: _firstNumber, kalan: _secondNumber, ),
+
+
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );

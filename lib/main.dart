@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ilkokuluygulama/homepage.dart';
 
 import 'substraction_view.dart';
 import 'read_view.dart';
@@ -16,7 +17,7 @@ class IlkokulUygulama extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ReadView()
+      home: Homepage()
     );
   }
 }
