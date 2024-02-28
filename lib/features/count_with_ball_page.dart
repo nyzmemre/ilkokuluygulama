@@ -104,19 +104,22 @@ class MyDragAndDropExample extends StatefulWidget {
 }
 
 class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
-  int? topWidgetLenght;
+  bool isVisible=false;
+  String result='DOĞRU';
+  List<Widget> circles = List.generate(20, (index) => CircleWidget());
+  int num1=Random().nextInt(21);
 
   List<Widget> droppedCircles = [];
 
   @override
   void initState() {
-   topWidgetLenght =Random().nextInt(21);
    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> circles = List.generate(topWidgetLenght ?? 2, (index) => CircleWidget());
+    int num2=20-num1;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -124,14 +127,17 @@ class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
       ),
       body: Center(
         child: Column(
-          children: <Widget>[
+          children: [
             SizedBox(height: 20),
             // Sürüklenebilir dairelerin bulunduğu container
             Container(
-              height: 300,
               child: GridView.builder(
+                shrinkWrap: true,
                   itemCount: circles.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: (circles.length>5) ? 5 : circles.length), itemBuilder: (context, int index){
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 10,
+                    crossAxisSpacing:0,
+                    childAspectRatio: 1,), itemBuilder: (context, int index){
                 return circles[index];
               })/*ListView(
                 scrollDirection: Axis.horizontal,
@@ -139,27 +145,51 @@ class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
               ),*/
             ),
             SizedBox(height: 20),
+            (isVisible) ? Text(result, style: TextStyle(fontSize: 30),) : SizedBox(),
+
             // Bırakma alanı container'ı
-            Container(
-              height: 150,
-              width: 300,
-              color: Colors.grey[200],
-              child: DragTarget(
-                onAccept: (CircleWidget circle) {
-                  setState(() {
-                    droppedCircles.add(circle);
-                  });
-                },
-                builder: (context, List<CircleWidget?> candidateData, rejectedData) {
-                  return (droppedCircles.isNotEmpty) ? GridView.builder(
-                      itemCount: droppedCircles.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: (droppedCircles.length>5) ? 5 : droppedCircles.length), itemBuilder: (context, int index){
-                    return droppedCircles[index];
-                  }) : SizedBox();
-                },
-              ),
+            Row(
+              children: [
+                Container(
+                  height: 300,
+                  width: 150,
+                  color: Colors.grey[200],
+                  child: DragTarget(
+                    onAccept: (CircleWidget circle) {
+                      setState(() {
+                        droppedCircles.add(circle);
+                      });
+                    },
+                    builder: (context, List<CircleWidget?> candidateData, rejectedData) {
+                      return (droppedCircles.isNotEmpty) ? GridView.builder(
+                          itemCount: droppedCircles.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: (droppedCircles.length>5) ? 5 : droppedCircles.length), itemBuilder: (context, int index){
+                        return droppedCircles[index];
+                      }) : SizedBox();
+                    },
+
+                  ),
+                ),
+                Text('?', style: TextStyle(fontSize: 30),),
+
+              ],
             ),
+            Text(num1.toString(), style: TextStyle(fontSize: 30),),
+            Text('${num1 + num2}', style: TextStyle(fontSize: 30),),
+            ElevatedButton(onPressed: (){
+              if(num2==droppedCircles.length){
+                setState(() {
+                  isVisible=true;
+                });
+              }else {
+                setState(() {
+                  result='YANLIŞ';
+                  isVisible=true;
+                });
+              }
+            }, child: Text('Kontrol Et'))
+
           ],
         ),
       ),
@@ -173,25 +203,24 @@ class CircleWidget extends StatelessWidget {
     return Draggable(
       data: CircleWidget(),
       child: Container(
-        width: 20,
-        height: 20,
+        width: 10,
+        height: 10,
         decoration: BoxDecoration(
           color: Colors.blue,
           shape: BoxShape.circle,
         ),
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.all(10),
       ),
       feedback: Container(
-        width: 30, // farklı bir boyut kullanabilirsiniz
-        height: 30, // farklı bir boyut kullanabilirsiniz
+        width: 10, // farklı bir boyut kullanabilirsiniz
+        height: 10, // farklı bir boyut kullanabilirsiniz
         decoration: BoxDecoration(
           color: Colors.blue.withOpacity(0.5),
           shape: BoxShape.circle,
         ),
         margin: EdgeInsets.all(8),
       ),
-      onDragEnd: (DraggableDetails detail){
-      },
+
     );
   }
 }
