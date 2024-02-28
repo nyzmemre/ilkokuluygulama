@@ -14,7 +14,7 @@ class Homepage extends StatelessWidget {
         children: [
           page_button(context,ReadView() ,'Okuma Hızlandırma'),
           page_button(context,SubstractionView() ,'Çıkarma'),
-          page_button(context,CountWithBallPage() ,'Toplama'),
+         page_button(context,MyDragAndDropExample() ,'Toplama'),
 
         ],
       ),
