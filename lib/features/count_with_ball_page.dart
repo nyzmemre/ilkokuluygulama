@@ -111,6 +111,7 @@ class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
 
   List<Widget> droppedCircles = [];
 
+
   @override
   void initState() {
    super.initState();
@@ -118,7 +119,7 @@ class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
 
   @override
   Widget build(BuildContext context) {
-    int num2=20-num1;
+    int num2=Random().nextInt(20-num1);
 
 
     return Scaffold(
@@ -188,12 +189,23 @@ class _MyDragAndDropExampleState extends State<MyDragAndDropExample> {
                   isVisible=true;
                 });
               }
-            }, child: Text('Kontrol Et'))
+            }, child: Text('Kontrol Et')),
+            ElevatedButton(onPressed: (){
+              refreshNumbers();
+            }, child: Text('Yeni Soru'))
 
           ],
         ),
       ),
     );
+  }
+  void refreshNumbers() {
+    setState(() {
+      num1 = Random().nextInt(21);
+      droppedCircles.clear();
+      isVisible = false;
+      result = 'DOĞRU';
+    });
   }
 }
 
